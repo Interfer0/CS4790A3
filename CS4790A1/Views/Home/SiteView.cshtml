@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model CS4790A2.Models.Site
+<div>
+    <h1 class="col-xs-12">Thank you all for your contributions!</h1>
+    <table class="col-md-6 col-xs-12 table-striped">
+        <tr >
+            <td class="col-xs-4 text-left pad2">Site Name: </td>
+            <td>@Model.siteName</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Land Type: </td>
+            <td>@Model.siteLandType</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Latitude: </td>
+            <td id="lat">@Model.siteLat</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Longitude: </td>
+            <td id="long">@Model.siteLong</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Description: </td>
+            <td>@Model.siteDescription</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Site Uses: </td>
+            <td>@Model.siteUses</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Email: </td>
+            <td>@Model.siteSubmiterEmail</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Is Site Level?: </td>
+            <td>@Model.siteLevel</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">
+                <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-default">Continue to Sites...</button>
+
+            </tdclass="col-xs-4>
+        </tr>
+    </table>
+    <div class="col-md-6 col-xs-12">
+        <div id="map" style="width:100%;height:50vh;"></div>
+    </div>
+</div>
+
+
+
+<script>
+    var marker;
+    var latDMS = document.querySelector('#lat').innerHTML;
+    var longDMS = document.querySelector('#long').innerHTML;
+
+    function myMap() {
+        var mapCanvas = document.getElementById("map");
+        var lat = getDeg(latDMS);
+        var long = getDeg(longDMS);
+
+        var myCenter = new google.maps.LatLng(lat, long);
+        var mapOptions = { center: myCenter, zoom: 12 };
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+        var ltlng = { lat: lat, lng: long };
+        console.log(ltlng)
+        var marker = new google.maps.Marker({
+            position: ltlng,
+                map:map,
+            title: 'Site Location'
+        });
+        
+    }
+
+    function getDeg(dms, deg) {
+        var numbs = dms.match(/[0-9]{1,3}/g);
+
+        var direction = dms[dms.length - 1];
+        var hours = numbs[0];
+        var minutes = numbs[1];
+        var seconds = numbs[2];
+        deg = parseFloat(hours) + (parseFloat(minutes) / 60) + (parseFloat(seconds) / 3600);
+        if (direction == 'S' || direction == 'W')
+            deg *= -1;
+        return deg;
+    }
+
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtfgo1CUqPTn2EV8m39gAm8x6xqVb92KE&callback=myMap"></script>

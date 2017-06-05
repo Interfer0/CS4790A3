@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<CS4790A2.Models.Site>
+
+@{
+}
+<table class="col-xs-12 table-responsive table-bordered table-striped" style="margin-top:10px;">
+        <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Latitude</td>
+            <td>Longitude</td>
+            <td>Description</td>
+            <td>Level?</td>
+            <td>Uses</td>
+            <td>Entered by</td>
+        </tr>
+
+
+        @foreach (CS4790A2.Models.Site r in Model)
+        {
+            <tr>
+                <td class="pad2">@Html.ActionLink(r.siteName, "SiteView", "Home",r )</td>
+                <td class="pad2">@r.siteLandType</td>
+                <td class="pad2">@r.siteLat</td>
+                <td class="pad2">@r.siteLong</td>
+                <td class="pad2">@r.siteDescription</td>
+                <td class="pad2">@r.siteLevel</td>
+                <td class="pad2">@r.siteUses</td>
+                <td class="pad2">@r.siteSubmiterEmail</td>
+            </tr>
+
+        }
+
+</table>

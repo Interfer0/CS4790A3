@@ -1,0 +1,15 @@
+﻿body {
+}
+
+#toppic{
+    height:20vh;
+    width:100vw;
+    background-image:url("../images/Camping1.jpg");
+    background-size:cover;
+    background-position-y:-30vh;
+    
+}
+
+.top10 {margin-top:1000px;}
+
+.pad2{padding:2px;}
