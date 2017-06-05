@@ -2,14 +2,23 @@
 }
 
 #toppic{
-    height:20vh;
+    height:10vw;
     width:100vw;
     background-image:url("../images/Camping1.jpg");
     background-size:cover;
-    background-position-y:-30vh;
-    
+    background-position-y:-20vw;    
 }
 
-.top10 {margin-top:1000px;}
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    #toppic {
+        height: 30vw;
+        background-position-y: -10vw;
+    }
+}
+
+.top10 {margin-top:10px;}
 
 .pad2{padding:2px;}
+
+.bold{font-weight:bold;}

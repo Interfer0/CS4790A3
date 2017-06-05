@@ -5,32 +5,127 @@
 
 @{
 }
-<table class="col-xs-12 table-responsive table-bordered table-striped" style="margin-top:10px;">
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Latitude</td>
-            <td>Longitude</td>
-            <td>Description</td>
-            <td>Level?</td>
-            <td>Uses</td>
-            <td>Entered by</td>
-        </tr>
+
+<script>
+    var ltlngs = [];
+
+    function addMarker(lat, long, name) {
+        var ltlng = { lat: lat, lng: long };
+        ltlngs.push(ltlng);
+    }
+
+    function getDeg(dms, deg) {
+        var numbs = dms.match(/[0-9]{1,3}/g);
+
+        var direction = dms[dms.length - 1];
+        var hours = numbs[0];
+        var minutes = numbs[1];
+        var seconds = numbs[2];
+        deg = parseFloat(hours) + (parseFloat(minutes) / 60) + (parseFloat(seconds) / 3600);
+        if (direction == 'S' || direction == 'W')
+            deg *= -1;
+        return deg;
+    }
 
 
+</script>
+
+
+
+<div class="container">
+    <div id="sites" class="col-xs-12 col-md-6">
         @foreach (CS4790A2.Models.Site r in Model)
         {
-            <tr>
-                <td class="pad2">@Html.ActionLink(r.siteName, "SiteView", "Home",r )</td>
-                <td class="pad2">@r.siteLandType</td>
-                <td class="pad2">@r.siteLat</td>
-                <td class="pad2">@r.siteLong</td>
-                <td class="pad2">@r.siteDescription</td>
-                <td class="pad2">@r.siteLevel</td>
-                <td class="pad2">@r.siteUses</td>
-                <td class="pad2">@r.siteSubmiterEmail</td>
-            </tr>
+            <table class="table-responsive table-bordered col-md-12 col-xs-11 top10 table-striped">
+                <tr>
+                    <td class="col-xs-3">Site Name:</td>
+                    <td>@Html.ActionLink(r.siteName, "SiteView", "Home", r)</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Land Type:</td>
+                    <td>@r.siteLandType</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Latitude:</td>
+                    <td>@r.siteLat</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Longitude:</td>
+                    <td>@r.siteLong</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Description:</td>
+                    <td>@r.siteDescription</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Site is Level:</td>
+                    <td>@r.siteLevel</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Submitted By:</td>
+                    <td>@r.siteSubmiterEmail</td>
+                </tr>
+            </table>
 
+                    <script>
+                        var htmlLat = "@r.siteLat";
+                        var htmlLong = "@r.siteLong";
+                        var divLat = document.createElement("div");
+                        var divLong = document.createElement("div");
+                        divLat.innerHTML = htmlLat;
+                        divLong.innerHTML = htmlLong;
+
+
+                        addMarker(getDeg(divLat.innerHTML), getDeg(divLong.innerHTML), "@r.siteName");
+                    </script>
         }
 
-</table>
+    </div>
+    <div id="map" class="col-xs-12 col-md-6 table-bordered top10" style="height:50vh;"></div>
+
+    <script>
+
+                        var map;
+
+                        function myMap() {
+                            var mapCanvas = document.getElementById("map");
+
+
+                            var myCenter = new google.maps.LatLng(41.193617, -111.943817);
+                            var mapOptions = { center: myCenter, zoom: 12 };
+                            map = new google.maps.Map(mapCanvas, mapOptions);
+
+                        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtfgo1CUqPTn2EV8m39gAm8x6xqVb92KE&callback=myMap"></script>
+
+    <script>
+            var markers = [];
+   
+            for (var i = 0, len = ltlngs.length; i < len; i++)
+        {
+
+            var marker = new google.maps.Marker({
+                position: ltlngs[i],
+                map: map,
+                title: "test"
+            });
+            markers.push(marker);
+
+            }
+
+
+            var bounds = new google.maps.LatLngBounds();
+
+            for (var i = 0; i < markers.length; i++) {
+                bounds.extend(markers[i].getPosition());
+            }
+            map.fitBounds(bounds);
+            map.setCenter();
+    </script>
+
+
+
+
+</div>

@@ -8,6 +8,7 @@ namespace CS4790A2.Models
 {
     public class Site
     {
+
         [Required(ErrorMessage = "Enter Site Name")]
         public string siteName { get; set; }
         [Required(ErrorMessage = "Email Required")]
