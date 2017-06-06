@@ -10,7 +10,17 @@
 
   <ItemGroup>
     <Content Include="wwwroot\css\Camp.css" />
+    <Content Include="wwwroot\images\20170602_165032.jpg" />
+    <Content Include="wwwroot\images\Camp01.jpg" />
     <Content Include="wwwroot\images\Camping1.jpg" />
+    <Content Include="wwwroot\images\camping\11535665_10207295960021020_6321462790960462991_n.jpg" />
+    <Content Include="wwwroot\images\camping\11713746_10152883070977443_3417611746183062534_o.jpg" />
+    <Content Include="wwwroot\images\camping\20170602_151526.jpg" />
+    <Content Include="wwwroot\images\camping\Camp02.jpg" />
+    <Content Include="wwwroot\images\camping\Camp01.jpg" />
+    <Content Include="wwwroot\images\camping\Camp03.jpg" />
+    <Content Include="wwwroot\images\camping\Camp04.jpg" />
+    <Content Include="wwwroot\images\camping\Camp05.jpg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="3.3.7" />

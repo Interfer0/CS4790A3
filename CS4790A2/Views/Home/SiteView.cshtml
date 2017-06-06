@@ -26,6 +26,18 @@
             <td>@Model.siteDescription</td>
         </tr>
         <tr>
+            <td class="col-xs-4 text-left pad2">Water available? </td>
+            <td>@Model.siteWater</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Miles to gas station: </td>
+            <td>@Model.siteGas</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4 text-left pad2">Offroad vehicles only: </td>
+            <td>@Model.siteOffroad</td>
+        </tr>
+        <tr>
             <td class="col-xs-4 text-left pad2">Site Uses: </td>
             <td>@Model.siteUses</td>
         </tr>
@@ -39,7 +51,7 @@
         </tr>
         <tr>
             <td class="col-xs-4 text-left pad2">
-                <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-default">Continue to Sites...</button>
+                <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-primary top10">Continue to Sites...</button>
 
             </tdclass="col-xs-4>
         </tr>

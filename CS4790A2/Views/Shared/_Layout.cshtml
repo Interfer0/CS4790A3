@@ -5,18 +5,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CS4790A2</title>
-    <link rel="stylesheet" href="~/css/camp.css" />
+    
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/Camp.css" />
+        
     </environment>
+
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        
     </environment>
+    <link rel="stylesheet" type="text/css" href="~/css/camp.css" />
     @Html.Raw(JavaScriptSnippet.FullScript)
+
+   
 </head>
 <body>
     <div id="toppic" class="img-responsive"></div>
@@ -29,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CS4790A1</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CS4790A2</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

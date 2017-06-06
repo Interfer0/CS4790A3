@@ -19,11 +19,17 @@ namespace CS4790A2.Models
         [Required(ErrorMessage = "Land Type Required")]
         public string siteLandType { get; set; }
         public string siteUses { get; set; }
+        [Required(ErrorMessage = "Water nearby information Required")]
+        public Boolean siteWater { get; set; }
+        [Required(ErrorMessage = "How close is the nearest gas station?")]
+        public int siteGas { get; set; }
+        [Required(ErrorMessage = "Does this site require an Offroad vehicle to access?")]
+        public Boolean siteOffroad { get; set; }
         [Required(ErrorMessage = "Longitude Required")]
         public string siteLong { get; set; }
         [Required(ErrorMessage = "Latitude Required")]
         public string siteLat { get; set; }
-        public Boolean? siteLevel { get; set; }
+        public Boolean siteLevel { get; set; }
 
     }
 }

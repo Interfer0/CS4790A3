@@ -22,3 +22,23 @@
 .pad2{padding:2px;}
 
 .bold{font-weight:bold;}
+
+.btn-primary{
+    background-color: darkgreen;
+}
+
+.navbar-fixed-top {
+    background-color: darkgreen;
+}
+
+.navbar .brand, .navbar .nav > li > a {
+    color: white;
+}
+
+.navbar .brand, .navbar .nav > li > a:hover {
+        color: white;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white !important;
+}

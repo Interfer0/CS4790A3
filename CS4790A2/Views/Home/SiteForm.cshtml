@@ -7,46 +7,57 @@
         <form asp-action="SiteForm" method="post">
             <div asp-validation-summary="All"></div>
             <div class="form-group">
-                <label asp-for="siteName">Site Name:</label>
+                <label asp-for="siteName">Site name:</label>
                 <input class="form-control" asp-for="siteName" />
             </div>
             <div class="form-group">
-                <label asp-for="siteLandType">Site LandType: (BLM, USFS, etc...)</label>
+                <label asp-for="siteLandType">Site landType: (BLM, USFS, etc...)</label>
                 <input class="form-control" asp-for="siteLandType" />
             </div>
             <div class="form-group">
-                <label asp-for="siteLat">Site Latitude: (Select on Map)</label>
+                <label asp-for="siteLat">Site latitude: (Select on Map)</label>
                 <input class="form-control" readonly asp-for="siteLat" />
             </div>
             <div class="form-group">
-                <label asp-for="siteLong">Site Longitude: (Select on Map)</label>
+                <label asp-for="siteLong">Site longitude: (Select on Map)</label>
                 <input class="form-control" readonly asp-for="siteLong" />
             </div>
             <div class="form-group">
-                <label asp-for="siteDescription">Site Description:</label>
+                <label asp-for="siteDescription">Site description:</label>
                 <textarea class="form-control" asp-for="siteDescription"></textarea>
             </div>
             <div class="form-group">
-                <label asp-for="siteUses">Site Uses: (Hunting, Hiking, etc..)</label>
+                <label asp-for="siteWater">Water available onsite?</label>
+                
+                <input class="form-control" asp-for="siteWater" />
+            </div>
+            <div class="form-group">
+                <label asp-for="siteGas">Miles to nearest gas station?</label>
+                <input class="form-control" asp-for="siteGas" />
+            </div>
+            <div class="form-group">
+                <label asp-for="siteOffroad">Offroad vehicle access only</label>
+                <input class="form-control" asp-for="siteOffroad" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="siteUses">Site uses: (Hunting, Hiking, etc..)</label>
                 <input class="form-control" asp-for="siteUses" />
             </div>
             <div class="form-group">
-                <label asp-for="siteSubmiterEmail">Your Email:</label>
+                <label asp-for="siteSubmiterEmail">Your email:</label>
                 <input class="form-control" asp-for="siteSubmiterEmail" />
             </div>
             <div class="form-group">
-                <label>Is Site Level?</label>
-                <select class="form-control" asp-for="siteLevel">
-                    <option value="">Choose an option</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                </select>
+                <label>Is site level?</label>
+                <input class="form-control" asp-for="siteLevel" />
             </div>
             <div class="text-center">
                 <button class="btn btn-primary" type="submit">Submit Site</button>
             </div>
         </form>
-
+        <br />
+        <br />
 
     </div>
     <div class="col-md-6 col-xs-12">
