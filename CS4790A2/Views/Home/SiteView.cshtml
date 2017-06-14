@@ -15,11 +15,11 @@
         </tr>
         <tr>
             <td class="col-xs-4 text-left pad2">Latitude: </td>
-            <td id="lat">@Model.siteLat</td>
+            <td><script>document.write(convertLatLong(@Model.siteLat, "latitude"))</script></td>
         </tr>
         <tr>
             <td class="col-xs-4 text-left pad2">Longitude: </td>
-            <td id="long">@Model.siteLong</td>
+            <td><script>document.write(convertLatLong(@Model.siteLong,"longitude"))</script></td>
         </tr>
         <tr>
             <td class="col-xs-4 text-left pad2">Description: </td>
@@ -65,13 +65,12 @@
 
 <script>
     var marker;
-    var latDMS = document.querySelector('#lat').innerHTML;
-    var longDMS = document.querySelector('#long').innerHTML;
+
 
     function myMap() {
         var mapCanvas = document.getElementById("map");
-        var lat = getDeg(latDMS);
-        var long = getDeg(longDMS);
+        var lat = @Model.siteLat;
+        var long = @Model.siteLong;
 
         var myCenter = new google.maps.LatLng(lat, long);
         var mapOptions = { center: myCenter, zoom: 12 };

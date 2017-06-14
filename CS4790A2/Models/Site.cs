@@ -26,9 +26,9 @@ namespace CS4790A3.Models
         [Required(ErrorMessage = "Does this site require an Offroad vehicle to access?")]
         public Boolean siteOffroad { get; set; }
         [Required(ErrorMessage = "Longitude Required")]
-        public string siteLong { get; set; }
+        public double siteLong { get; set; }
         [Required(ErrorMessage = "Latitude Required")]
-        public string siteLat { get; set; }
+        public double siteLat { get; set; }
         public Boolean siteLevel { get; set; }
 
     }

@@ -15,12 +15,14 @@
                 <input class="form-control" asp-for="siteLandType" />
             </div>
             <div class="form-group">
-                <label asp-for="siteLat">Site latitude: (Select on Map)</label>
-                <input class="form-control" readonly asp-for="siteLat" />
+                <label asp-for="siteLat">Site latitude: (Select on Map)</label><br/>
+                <input type="text" readonly id="readableLat" />
+                @Html.HiddenFor(model => model.siteLat)
             </div>
             <div class="form-group">
-                <label asp-for="siteLong">Site longitude: (Select on Map)</label>
-                <input class="form-control" readonly asp-for="siteLong" />
+                <label asp-for="siteLong">Site longitude: (Select on Map)</label><br/>
+                <input type="text" readonly id="readableLong" />
+                @Html.HiddenFor(model => model.siteLong)
             </div>
             <div class="form-group">
                 <label asp-for="siteDescription">Site description:</label>
@@ -97,38 +99,13 @@
           */
         updateLatLong(location.lat(), location.lng());
     }
-
+    
     function updateLatLong(lat, lng) {
-        var dDirLat;
-        var dDirLong;
-        var dDegLat;
-        var dDegLong;
-        var dMinLat;
-        var dMinLong;
-        var dSecLat;
-        var dSecLong;
+        document.querySelector("#siteLat").value = lat;
+        document.querySelector("#siteLong").value = lng;
 
-        dDirLat = lat < 0 ? "S" : "N";
-        dDirLong = lng < 0 ? "W" : "E";
-
-        lat = Math.abs(lat);
-        lng = Math.abs(lng);
-
-        dDegLat = Math.floor(lat);
-        dDegLong = Math.floor(lng);
-
-        dSecLat = (lat - dDegLat) * 3600;
-        dSecLong = (lng - dDegLong) * 3600;
-      
-
-        dMinLat = Math.floor(dSecLat / 60);
-        dMinLong = Math.floor(dSecLong / 60);
-
-        dSecLat = Math.floor(dSecLat - (dMinLat * 60));
-        dSecLong = Math.floor(dSecLong - (dMinLong * 60));
-        
-        document.querySelector("#siteLat").value = dDegLat + "° " + dMinLat + "\' " + dSecLat + "\"" + dDirLat;
-        document.querySelector("#siteLong").value = dDegLong + "° " + dMinLong + "\' " + dSecLong + "\"" + dDirLong;
+        document.querySelector("#readableLat").value = convertLatLong(lat, "latitude");
+        document.querySelector("#readableLong").value = convertLatLong(lng, "longitude");
 
     }
 </script>

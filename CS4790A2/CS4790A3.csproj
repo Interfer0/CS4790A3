@@ -21,6 +21,7 @@
     <Content Include="wwwroot\images\camping\Camp03.jpg" />
     <Content Include="wwwroot\images\camping\Camp04.jpg" />
     <Content Include="wwwroot\images\camping\Camp05.jpg" />
+    <Content Include="wwwroot\js\googlemaps.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="3.3.7" />
