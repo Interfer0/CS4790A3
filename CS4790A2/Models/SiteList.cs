@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CS4790A2.Models
+namespace CS4790A3.Models
 {
     public class SiteList
     {
