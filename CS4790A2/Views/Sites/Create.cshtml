@@ -1,0 +1,101 @@
+@model CS4790A3.Models.Site
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Site</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="siteName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteName" class="form-control" />
+                <span asp-validation-for="siteName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="siteDescription" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteDescription" class="form-control" />
+                <span asp-validation-for="siteDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="siteLandType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteLandType" class="form-control" />
+                <span asp-validation-for="siteLandType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="siteUses" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteUses" class="form-control" />
+                <span asp-validation-for="siteUses" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="siteWater" />
+                    <label asp-for="siteWater"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="siteGas" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteGas" class="form-control" />
+                <span asp-validation-for="siteGas" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="siteOffroad" />
+                    <label asp-for="siteOffroad"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="siteLong" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteLong" class="form-control" />
+                <span asp-validation-for="siteLong" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="siteLat" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="siteLat" class="form-control" />
+                <span asp-validation-for="siteLat" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="siteLevel" />
+                    <label asp-for="siteLevel"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

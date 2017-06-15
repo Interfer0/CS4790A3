@@ -42,8 +42,12 @@
             <td>@Model.siteUses</td>
         </tr>
         <tr>
+            <td class="col-xs-4 text-left pad2">User Name: </td>
+            <td>@Model.User.userName</td>
+        </tr>
+        <tr>
             <td class="col-xs-4 text-left pad2">Email: </td>
-            <td>@Model.siteSubmiterEmail</td>
+            <td>@Model.User.userEmail</td>
         </tr>
         <tr>
             <td class="col-xs-4 text-left pad2">Is Site Level?: </td>
@@ -51,16 +55,18 @@
         </tr>
         <tr>
             <td class="col-xs-4 text-left pad2">
-                <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-primary top10">Continue to Sites...</button>
-
-            </tdclass="col-xs-4>
+                <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-primary top10">To Sites...</button>
+                <br/><br/>
+            </td class="col-xs-4>
         </tr>
+        
     </table>
+    
     <div class="col-md-6 col-xs-12">
         <div id="map" style="width:100%;height:50vh;"></div>
     </div>
+    
 </div>
-
 
 
 <script>
@@ -83,19 +89,6 @@
             title: 'Site Location'
         });
         
-    }
-
-    function getDeg(dms, deg) {
-        var numbs = dms.match(/[0-9]{1,3}/g);
-
-        var direction = dms[dms.length - 1];
-        var hours = numbs[0];
-        var minutes = numbs[1];
-        var seconds = numbs[2];
-        deg = parseFloat(hours) + (parseFloat(minutes) / 60) + (parseFloat(seconds) / 3600);
-        if (direction == 'S' || direction == 'W')
-            deg *= -1;
-        return deg;
     }
 
 

@@ -1,7 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model CS4790A3.Models.Site
+﻿@model CS4790A3.Models.Site
 <div style="margin-top:10px;">
     <div class="col-md-6 col-xs-12">
         <form asp-action="SiteForm" method="post">
@@ -10,6 +7,12 @@
                 <label asp-for="siteName">Site name:</label>
                 <input class="form-control" asp-for="siteName" />
             </div>
+            <div class="form-group">
+                    <label asp-for="UserID">User name:</label>
+                    <select asp-for="UserID" class="form-control" asp-items="ViewBag.UserID"></select>                   
+                    
+            </div>
+            
             <div class="form-group">
                 <label asp-for="siteLandType">Site landType: (BLM, USFS, etc...)</label>
                 <input class="form-control" asp-for="siteLandType" />
@@ -47,16 +50,14 @@
                 <input class="form-control" asp-for="siteUses" />
             </div>
             <div class="form-group">
-                <label asp-for="siteSubmiterEmail">Your email:</label>
-                <input class="form-control" asp-for="siteSubmiterEmail" />
-            </div>
-            <div class="form-group">
                 <label>Is site level?</label>
                 <input class="form-control" asp-for="siteLevel" />
             </div>
             <div class="text-center">
                 <button class="btn btn-primary" type="submit">Submit Site</button>
             </div>
+
+
         </form>
         <br />
         <br />

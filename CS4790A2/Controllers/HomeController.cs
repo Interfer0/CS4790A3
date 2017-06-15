@@ -4,12 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CS4790A3.Models;
+using CS4790A3.Data;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace CS4790A3
     .Controllers
 {
     public class HomeController : Controller
     {
+        private readonly SiteContext _context;
+
+        public HomeController(SiteContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -29,32 +40,92 @@ namespace CS4790A3
             return View();
         }
 
-        public ViewResult Sites()
+        public async Task<IActionResult> Sites(string sortOrder, string searchString, string CurrentFilter, int? page)
         {
-            return View(SiteList.Sites);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+
+            else
+            {
+                searchString = CurrentFilter;
+            }
+
+            var sites = from s in _context.Sites
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sites = sites.Where(s => s.siteName.Contains(searchString));              
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    sites = sites.OrderByDescending(s => s.siteName);
+                    break;
+                case "land_type":
+                    sites = sites.OrderBy(s => s.siteLandType);
+                    break;
+                case "submitted_by":
+                    sites = sites.OrderByDescending(s => s.User.userName);
+                    break;
+                default:
+                    sites = sites.OrderBy(s => s.siteName);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Site>.CreateAsync(sites
+                .Include(c => c.User)
+                .AsNoTracking(),
+                page ?? 1, pageSize));
+
+
         }
 
         [HttpGet]
         public ViewResult SiteForm()
         {
+
+
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
+
+                return View();
+            
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SiteForm([Bind("SiteID,UserID,siteName,siteDescription,siteLandType,siteUses,siteWater,siteGas,siteOffroad,siteLong,siteLat,siteLevel")] Site site)
+        {
+            
+            
+            if (ModelState.IsValid)
+            {
+                _context.Add(site);
+                await _context.SaveChangesAsync();
+                return View("SiteView",site);
+            }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
             return View();
         }
 
-            
-        [HttpPost]
-        public ViewResult SiteForm(Site site)
+        public async Task<ViewResult> SiteView(int id)
         {
-            if(ModelState.IsValid) {
-                SiteList.AddResponse(site);
-                return View("SiteView", site);
-            }else{
-                return View();
-            }
+            Debug.WriteLine("siteID " + id);
 
-        }
+            var site = await _context.Sites
+                .Include(r => r.User)
+                .SingleOrDefaultAsync(m => m.SiteID == id);
+ 
 
-        public ViewResult SiteView(Site site)
-        {
+            Debug.WriteLine("siteID " + site.SiteID);
             return View("SiteView", site);
         }
 

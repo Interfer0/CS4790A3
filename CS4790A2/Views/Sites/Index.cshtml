@@ -1,0 +1,89 @@
+@model IEnumerable<CS4790A3.Models.Site>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteLandType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteUses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteWater)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteGas)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteOffroad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteLong)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteLat)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.siteLevel)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteLandType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteUses)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteWater)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteGas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteOffroad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteLong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteLat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.siteLevel)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SiteID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SiteID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SiteID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

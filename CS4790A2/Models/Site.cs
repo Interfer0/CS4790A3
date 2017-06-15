@@ -8,12 +8,11 @@ namespace CS4790A3.Models
 {
     public class Site
     {
+        public int SiteID { get; set; }
 
         [Required(ErrorMessage = "Enter Site Name")]
         public string siteName { get; set; }
-        [Required(ErrorMessage = "Email Required")]
-        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Please enter a valid email address")]
-        public string siteSubmiterEmail { get; set; }
+
         [Required(ErrorMessage = "Site Description Required")]
         public string siteDescription { get; set; }
         [Required(ErrorMessage = "Land Type Required")]
@@ -30,6 +29,10 @@ namespace CS4790A3.Models
         [Required(ErrorMessage = "Latitude Required")]
         public double siteLat { get; set; }
         public Boolean siteLevel { get; set; }
+        
+        public int UserID { get; set; }
 
+        public ICollection<Comment> Comments { get; set; }
+        public User User { get; set; }
     }
 }

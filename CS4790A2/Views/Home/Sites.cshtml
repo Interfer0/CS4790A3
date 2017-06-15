@@ -39,7 +39,7 @@
             <table class="table-responsive table-bordered col-md-12 col-xs-11 top10 table-striped">
                 <tr>
                     <td class="col-xs-3">Site Name:</td>
-                    <td>@Html.ActionLink(r.siteName, "SiteView", "Home", r)</td>
+                    <td>@Html.ActionLink(r.siteName, "SiteView", "Home",  new {id = r.SiteID})</td>
                 </tr>
                 <tr>
                     <td class="col-xs-3">Land Type:</td>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td class="col-xs-3">Submitted By:</td>
-                    <td>@r.siteSubmiterEmail</td>
+                    <td>@r.User.userName</td>
                 </tr>
             </table>
             <script>
