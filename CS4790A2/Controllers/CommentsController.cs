@@ -7,25 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CS4790A3.Data;
 using CS4790A3.Models;
+using System.Diagnostics;
 
 namespace CS4790A3.Controllers
 {
-    public class SitesController : Controller
+    public class CommentsController : Controller
     {
         private readonly SiteContext _context;
 
-        public SitesController(SiteContext context)
+        public CommentsController(SiteContext context)
         {
             _context = context;    
         }
 
-        // GET: Sites
+        // GET: Comments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sites.ToListAsync());
+            return View(await _context.Comments.ToListAsync());
         }
 
-        // GET: Sites/Details/5
+        // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,40 +34,55 @@ namespace CS4790A3.Controllers
                 return NotFound();
             }
 
-            var site = await _context.Sites
-                .SingleOrDefaultAsync(m => m.SiteID == id);
-            if (site == null)
+            var comment = await _context.Comments
+                .SingleOrDefaultAsync(m => m.CommentID == id);
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(site);
+            return View(comment);
         }
 
-        // GET: Sites/Create
-        public IActionResult Create()
+        // GET: Comments/Create
+        public IActionResult Create(Site site)
         {
+            ViewData["Site"] = site;
+            ViewData["SiteName"] = site.siteName;
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
             return View();
         }
 
-        // POST: Sites/Create
+        // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SiteID,siteName,siteDescription,siteLandType,siteUses,siteWater,siteGas,siteOffroad,siteLong,siteLat,siteLevel")] Site site)
+        public async Task<IActionResult> Create([Bind("CommentID,cmtComment,cmtDate,UserID")] Comment comment,String site)
         {
-           
+            DateTime myDateTime = DateTime.Now;
+            string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            
+            comment.cmtDate = myDateTime;
+
+            Debug.WriteLine(comment.cmtDate);
+
             if (ModelState.IsValid)
             {
-                _context.Add(site);
+
+
+                _context.Add(comment);
                 await _context.SaveChangesAsync();
+
+
+
                 return RedirectToAction("Index");
             }
-            return View(site);
+
+            return View();
         }
 
-        // GET: Sites/Edit/5
+        // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +90,22 @@ namespace CS4790A3.Controllers
                 return NotFound();
             }
 
-            var site = await _context.Sites.SingleOrDefaultAsync(m => m.SiteID == id);
-            if (site == null)
+            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.CommentID == id);
+            if (comment == null)
             {
                 return NotFound();
             }
-            return View(site);
+            return View(comment);
         }
 
-        // POST: Sites/Edit/5
+        // POST: Comments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SiteID,siteName,siteDescription,siteLandType,siteUses,siteWater,siteGas,siteOffroad,siteLong,siteLat,siteLevel")] Site site)
+        public async Task<IActionResult> Edit(int id, [Bind("CommentID,cmtComment,cmtDate")] Comment comment)
         {
-            if (id != site.SiteID)
+            if (id != comment.CommentID)
             {
                 return NotFound();
             }
@@ -98,12 +114,12 @@ namespace CS4790A3.Controllers
             {
                 try
                 {
-                    _context.Update(site);
+                    _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SiteExists(site.SiteID))
+                    if (!CommentExists(comment.CommentID))
                     {
                         return NotFound();
                     }
@@ -114,10 +130,10 @@ namespace CS4790A3.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(site);
+            return View(comment);
         }
 
-        // GET: Sites/Delete/5
+        // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +141,30 @@ namespace CS4790A3.Controllers
                 return NotFound();
             }
 
-            var site = await _context.Sites
-                .SingleOrDefaultAsync(m => m.SiteID == id);
-            if (site == null)
+            var comment = await _context.Comments
+                .SingleOrDefaultAsync(m => m.CommentID == id);
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(site);
+            return View(comment);
         }
 
-        // POST: Sites/Delete/5
+        // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var site = await _context.Sites.SingleOrDefaultAsync(m => m.SiteID == id);
-            _context.Sites.Remove(site);
+            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.CommentID == id);
+            _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool SiteExists(int id)
+        private bool CommentExists(int id)
         {
-            return _context.Sites.Any(e => e.SiteID == id);
+            return _context.Comments.Any(e => e.CommentID == id);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model IEnumerable<CS4790A3.Models.Site>
+@model PaginatedList<CS4790A3.Models.Site>
 
 @{
 }
@@ -34,12 +34,40 @@
 
 <div class="container">
     <div id="sites" class="col-xs-12 col-md-6">
+        <table>
+            <tr>
+                <td>
+                    Find by name:
+                </td>
+                <td>
+                    <form asp-action="Sites" method="get">
+                        <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </form>
+                </td>
+                <td>
+                    <a asp-action="Sites">  Back to Full List</a>
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>
+                    <a asp-action="Sites" asp-route-sortOrder=@ViewData["NameSortParm"] asp-route-currentFilter=@ViewData["CurrentFilter"]>Site Name</a>
+                </td>
+                <td>
+                    <a asp-action="Sites" asp-route-sortOrder=@ViewData["LandTypeParm"] asp-route-currentFilter=@ViewData["CurrentFilter"]>Land Type</a>
+                </td>
+                <td>
+                    <a asp-action="Sites" asp-route-sortOrder=@ViewData["SubmittedParm"] asp-route-currentFilter=@ViewData["CurrentFilter"]>Land Type</a>
+                </td>
+            </tr>
+
+        </table>
         @foreach (CS4790A3.Models.Site r in Model)
         {
             <table class="table-responsive table-bordered col-md-12 col-xs-11 top10 table-striped">
                 <tr>
                     <td class="col-xs-3">Site Name:</td>
-                    <td>@Html.ActionLink(r.siteName, "SiteView", "Home",  new {id = r.SiteID})</td>
+                    <td>@Html.ActionLink(r.siteName, "SiteView", "Home", new { id = r.SiteID })</td>
                 </tr>
                 <tr>
                     <td class="col-xs-3">Land Type:</td>
@@ -47,11 +75,13 @@
                 </tr>
                 <tr>
                     <td class="col-xs-3">Latitude:</td>
-                    <td><script>document.write(convertLatLong(@r.siteLat, "latitude"))</script></td>
+                    <td>
+                    <script>document.write(convertLatLong(@r.siteLat, "latitude"))</script></td>
                 </tr>
                 <tr>
                     <td class="col-xs-3">Longitude:</td>
-                    <td><script>document.write(convertLatLong(@r.siteLong,"longitude"))</script></td>
+                    <td>
+                    <script>document.write(convertLatLong(@r.siteLong,"longitude"))</script></td>
                 </tr>
                 <tr>
                     <td class="col-xs-3">Submitted By:</td>
@@ -63,51 +93,68 @@
             </script>
         }
 
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+            <a asp-action="Sites"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex - 1)"
+               asp-route-currentFiter="@ViewData["CurrentFilter"]"
+               class="btn btn-primary @prevDisabled btn">Previous</a>
+
+            <a asp-action="Sites"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-currentFiter="@ViewData["CurrentFilter"]"
+               class="btn btn-primary @nextDisabled btn">Next</a>
+
+        }
+
     </div>
     <div id="map" class="col-xs-12 col-md-6 table-bordered top10" style="height:50vh;"></div>
 
     <script>
 
-        
-
-    var map;
-
-    function myMap() {
-        var mapCanvas = document.getElementById("map");
 
 
-        var myCenter = new google.maps.LatLng(41.193617, -111.943817);
-        var mapOptions = { center: myCenter, zoom: 12 };
-        map = new google.maps.Map(mapCanvas, mapOptions);
+                var map;
 
-    }
+                function myMap() {
+                    var mapCanvas = document.getElementById("map");
+
+
+                    var myCenter = new google.maps.LatLng(41.193617, -111.943817);
+                    var mapOptions = { center: myCenter, zoom: 12 };
+                    map = new google.maps.Map(mapCanvas, mapOptions);
+
+                }
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtfgo1CUqPTn2EV8m39gAm8x6xqVb92KE&callback=myMap"></script>
 
     <script>
-            var markers = [];
-   
-            for (var i = 0, len = ltlngs.length; i < len; i++)
-        {
+                var markers = [];
 
-            var marker = new google.maps.Marker({
-                position: ltlngs[i],
-                map: map,
-                title: "test"
-            });
-            markers.push(marker);
+                for (var i = 0, len = ltlngs.length; i < len; i++) {
 
-            }
+                    var marker = new google.maps.Marker({
+                        position: ltlngs[i],
+                        map: map,
+                        title: "test"
+                    });
+                    markers.push(marker);
+
+                }
 
 
-            var bounds = new google.maps.LatLngBounds();
+                var bounds = new google.maps.LatLngBounds();
 
-            for (var i = 0; i < markers.length; i++) {
-                bounds.extend(markers[i].getPosition());
-            }
-            map.fitBounds(bounds);
-            map.setCenter();
+                for (var i = 0; i < markers.length; i++) {
+                    bounds.extend(markers[i].getPosition());
+                }
+                map.fitBounds(bounds);
+                map.setCenter();
     </script>
 
 

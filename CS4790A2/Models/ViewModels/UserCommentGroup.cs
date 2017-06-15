@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CS4790A3.Models.ViewModels
 {
-    public class UserCommenGroup
+    public class UserCommentGroup
     {
         public Comment Comment { get; set; }
         public User User { get; set; }

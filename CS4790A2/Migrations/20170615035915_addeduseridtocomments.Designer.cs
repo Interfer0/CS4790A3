@@ -8,9 +8,10 @@ using CS4790A3.Data;
 namespace CS4790A3.Migrations
 {
     [DbContext(typeof(SiteContext))]
-    partial class SiteContextModelSnapshot : ModelSnapshot
+    [Migration("20170615035915_addeduseridtocomments")]
+    partial class addeduseridtocomments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -28,8 +29,7 @@ namespace CS4790A3.Migrations
                     b.Property<string>("cmtComment")
                         .IsRequired();
 
-                    b.Property<DateTime>("cmtDate")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("cmtDate");
 
                     b.HasKey("CommentID");
 

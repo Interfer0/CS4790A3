@@ -44,7 +44,8 @@ namespace CS4790A3
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["LandTypeParm"] = String.IsNullOrEmpty(sortOrder) ? "land_type" : "";
+            ViewData["SubmittedParm"] = String.IsNullOrEmpty(sortOrder) ? "submitted_by" : "";
             ViewData["CurrentFilter"] = searchString;
 
             if (searchString != null)
@@ -110,7 +111,10 @@ namespace CS4790A3
             {
                 _context.Add(site);
                 await _context.SaveChangesAsync();
-                return View("SiteView",site);
+                var site2 = await _context.Sites
+                    .Include(r => r.User)
+                    .SingleOrDefaultAsync(m => m.SiteID == site.SiteID);
+                return View("SiteView",site2);
             }
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
             return View();
