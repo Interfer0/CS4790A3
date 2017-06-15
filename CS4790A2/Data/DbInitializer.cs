@@ -27,6 +27,12 @@ namespace CS4790A3.Data
 
             };
 
+            foreach (User d in users)
+            {
+                context.Users.Add(d);
+            }
+            context.SaveChanges();
+
             var sitelist = new Site[]
             {
                 new Site {
@@ -83,11 +89,7 @@ namespace CS4790A3.Data
 
             
 
-            foreach (User d in users)
-            {
-                context.Users.Add(d);
-            }
-            context.SaveChanges();
+            
 
 
             var comments = new Comment[]
