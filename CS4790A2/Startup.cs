@@ -32,6 +32,16 @@ namespace CS4790A3
             services.AddDbContext<SiteContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromHours(1);
+                options.CookieHttpOnly = true;
+                options.CookieName = ".CampCrowd.Session";
+
+            });
         }
 
 
@@ -50,6 +60,7 @@ namespace CS4790A3
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseSession();
 
             app.UseStaticFiles();
 

@@ -8,9 +8,10 @@ using CS4790A3.Data;
 namespace CS4790A3.Migrations
 {
     [DbContext(typeof(SiteContext))]
-    partial class SiteContextModelSnapshot : ModelSnapshot
+    [Migration("20170626213527_addingLoginInformation")]
+    partial class addingLoginInformation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -45,12 +46,6 @@ namespace CS4790A3.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("UserID");
-
-                    b.Property<string>("imglocation");
-
-                    b.Property<bool>("siteAvailable");
-
-                    b.Property<double>("siteCost");
 
                     b.Property<string>("siteDescription")
                         .IsRequired();
@@ -91,8 +86,6 @@ namespace CS4790A3.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired();
-
-                    b.Property<int>("accountType");
 
                     b.Property<string>("userEmail")
                         .IsRequired();

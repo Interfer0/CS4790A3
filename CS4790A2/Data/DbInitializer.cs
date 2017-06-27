@@ -1,4 +1,5 @@
 ﻿using CS4790A3.Models;
+using CS4790A3.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,18 @@ namespace CS4790A3.Data
 
             var users = new User[]
             {
-                new User { userName = "Phillip",
-                            userEmail = "i@i.com" },
+                new User { userName = "Interfer0",
+                            userEmail = "i@i.com",
+                            Password = UserService.encryptPassword("num4"),
+                            ConfirmPassword = UserService.encryptPassword("num4"),
+                            accountType = 100
+
+                },
                 new User { userName = "Ralph",
-                            userEmail = "i2@i.com" }
+                            userEmail = "i2@i.com",
+                            Password = UserService.encryptPassword("num4"),
+                            ConfirmPassword = UserService.encryptPassword("num4"),
+                            accountType = 1 }
 
             };
 
@@ -37,7 +46,7 @@ namespace CS4790A3.Data
             {
                 new Site {
                             siteName = "Home",
-                            UserID = users.Single( i => i.UserID == 1).UserID,
+                            UserID = users.Single( i => i.userName == "Interfer0").UserID,
                             siteDescription = "Not really my house",
                             siteGas = 3,
                             siteLandType = "Private",
@@ -47,11 +56,12 @@ namespace CS4790A3.Data
                             siteOffroad = false,
                             siteUses = "Living",
                             siteWater = true,
-                            
+                            siteCost = 9.99
+
                            },
                 new Site {
                             siteName = "Camp1",
-                            UserID = users.Single( i => i.UserID == 1).UserID,
+                            UserID = users.Single( i => i.userName == "Interfer0").UserID,
                             siteDescription = "Not a real camp",
                             siteGas = 3,
                             siteLandType = "Private",
@@ -60,11 +70,12 @@ namespace CS4790A3.Data
                             siteLong = -112.12646484375,
                             siteOffroad = false,
                             siteUses = "Nothing",
-                            siteWater = true
+                            siteWater = true,
+                            siteCost = 3.99
                            },
                 new Site {
                             siteName = "Camp2",
-                            UserID = users.Single( i => i.UserID == 2).UserID,
+                            UserID = users.Single( i => i.userName == "Interfer0").UserID,
                             siteDescription = "A field",
                             siteGas = 3,
                             siteLandType = "Private",
@@ -73,7 +84,8 @@ namespace CS4790A3.Data
                             siteLong = -105.84228515625,
                             siteOffroad = false,
                             siteUses = "Swimming",
-                            siteWater = true
+                            siteWater = true,
+                            siteCost = 5.99
                            }
 
             };
@@ -87,24 +99,7 @@ namespace CS4790A3.Data
 
 
 
-            
 
-            
-
-
-            var comments = new Comment[]
-            {
-                new Comment {UserID = 2, cmtComment = "Terrible Site"
-                },
-                new Comment {UserID = 2, cmtComment = "Wonderful Site"
-                }
-            };
-
-            foreach (Comment c in comments)
-            {
-                context.Comments.Add(c);
-            }
-            context.SaveChanges();
             
         }
     }

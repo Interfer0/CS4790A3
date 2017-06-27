@@ -8,9 +8,10 @@ using CS4790A3.Data;
 namespace CS4790A3.Migrations
 {
     [DbContext(typeof(SiteContext))]
-    partial class SiteContextModelSnapshot : ModelSnapshot
+    [Migration("20170627001356_addingAdminLevel")]
+    partial class addingAdminLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -45,12 +46,6 @@ namespace CS4790A3.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("UserID");
-
-                    b.Property<string>("imglocation");
-
-                    b.Property<bool>("siteAvailable");
-
-                    b.Property<double>("siteCost");
 
                     b.Property<string>("siteDescription")
                         .IsRequired();

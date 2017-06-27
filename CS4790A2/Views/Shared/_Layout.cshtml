@@ -1,11 +1,12 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@using Microsoft.AspNetCore.Http;
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CS4790A3</title>
-    
+    <title>@ViewData["Title"] - Campsite Finder</title>
+    <link rel="stylesheet" href="~/css/Camp.css"/>    
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         
@@ -35,26 +36,42 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CS4790A2</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CampSite Finder</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Sites">Sites</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="SiteForm">Add Site</a></li>
+                    @if (Context.Session.GetInt32("UserID") != null && Context.Session.GetInt32("UserLevel") == 100)
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="SiteForm">Add Site</a></li>
+                    }
+
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>              
-                    <li><a asp-area="" asp-controller="Users" asp-action="Create">Create User</a></li>
-
+                    <li class="navbar-text">(These would not be visible if not logged in)</li>
+                </ul>
+                <ul class="nav navbar-nav users" >
+                    @if (Context.Session.GetInt32("UserID") != null)
+                    {
+                        <li>@Context.Session.GetString("UserName");</li>                        
+                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                    }
                 </ul>
             </div>
+            
         </div>
     </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer class="col-xs-12 navbar-fixed-bottom">
-            <p>&copy; 2017 - CS4790A3</p>
+            <p>&copy; 2017 - CampSite Finder</p>
         </footer>
     </div>
 

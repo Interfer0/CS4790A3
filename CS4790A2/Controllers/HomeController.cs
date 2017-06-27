@@ -8,6 +8,8 @@ using CS4790A3.Data;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using CS4790A3.Services;
 
 namespace CS4790A3
     .Controllers
@@ -58,12 +60,18 @@ namespace CS4790A3
                 searchString = CurrentFilter;
             }
 
-            var sites = from s in _context.Sites
-                           select s;
+            var sites = _context.Sites.Where(s => 
+            (s.siteAvailable == true || s.siteAvailable.Equals(null)) 
+            || HttpContext.Session.GetInt32("UserLevel") == 100);
+                /*from s in _context.Sites
+                           select s;*/
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                sites = sites.Where(s => s.siteName.Contains(searchString));              
+                sites = sites.Where(
+                    s => s.siteName.Contains(searchString) && 
+                ((s.siteAvailable == true || s.siteAvailable.Equals(null)) || HttpContext.Session.GetInt32("UserLevel") == 100)
+                );              
             }
             switch (sortOrder)
             {
@@ -133,9 +141,77 @@ namespace CS4790A3
             return View("SiteView", site);
         }
 
+        public async Task<ViewResult> SiteEdit(int id)
+        {
+            if(!UserService.checkSecurityLevel(HttpContext.Session.GetInt32("UserLevel"), 100))
+                return View("../Account/Login");
+            
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
+            var site = await _context.Sites
+                .Include(r => r.User)
+                .SingleOrDefaultAsync(m => m.SiteID == id);
+
+            return View("SiteEdit", site);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SiteEdit(int id, [Bind("SiteID," +
+            "UserID," +
+            "siteName," +
+            "siteDescription," +
+            "siteLandType," +
+            "siteUses," +
+            "siteWater," +
+            "siteGas," +
+            "siteOffroad," +
+            "siteLong," +
+            "siteLat," +
+            "siteLevel," +
+            "siteCost," +
+            "imglocation, " +
+            "siteAvailable, " +
+            "UserID")] Site site)
+        {
+            if (id != site.SiteID)
+                return NotFound();
+            if (!UserService.checkSecurityLevel(HttpContext.Session.GetInt32("UserLevel"), 100))
+                return View("../Account/Login");
+
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(site);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SiteExists(site.SiteID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
+            return View("SiteView",site);
+        }
+
+        private bool SiteExists(int siteID)
+        {
+            return _context.Sites.Any(e => e.SiteID == siteID);
+        }
+
         public IActionResult Error()
         {
             return View();
         }
+
+        
     }
 }

@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Http;
 @model PaginatedList<CS4790A3.Models.Site>
 
 @{
@@ -61,28 +59,41 @@
                 </td>
             </tr>
 
-        </table>
+        </table><br/><br/>
         @foreach (CS4790A3.Models.Site r in Model)
         {
             <table class="table-responsive table-bordered col-md-12 col-xs-11 top10 table-striped">
                 <tr>
                     <td class="col-xs-3">Site Name:</td>
-                    <td>@Html.ActionLink(r.siteName, "SiteView", "Home", new { id = r.SiteID })</td>
+                    <td>@if (Context.Session.GetInt32("UserLevel") == 100)
+                        {
+                            @Html.ActionLink(r.siteName, "SiteView", "Home", new { id = r.SiteID });
+                            
+
+                        } else
+                        {
+                            @r.siteName
+
+                        } 
+                    &nbsp;
+                        @if (Context.Session.GetInt32("UserLevel") == 100)
+                        {
+                            
+                            @Html.ActionLink("Edit", "SiteEdit", "Home", new { id = r.SiteID });
+
+                        }
+                        
+                    </td>
                 </tr>
                 <tr>
                     <td class="col-xs-3">Land Type:</td>
                     <td>@r.siteLandType</td>
                 </tr>
                 <tr>
-                    <td class="col-xs-3">Latitude:</td>
-                    <td>
-                    <script>document.write(convertLatLong(@r.siteLat, "latitude"))</script></td>
+                    <td class="col-xs-3">Description:</td>
+                    <td>@r.siteDescription</td>
                 </tr>
-                <tr>
-                    <td class="col-xs-3">Longitude:</td>
-                    <td>
-                    <script>document.write(convertLatLong(@r.siteLong,"longitude"))</script></td>
-                </tr>
+                
                 <tr>
                     <td class="col-xs-3">Submitted By:</td>
                     <td>@r.User.userName</td>

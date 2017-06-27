@@ -42,3 +42,16 @@
 .navbar-inverse .navbar-brand {
     color: white !important;
 }
+
+.users {
+    position: absolute;
+    right: 0px;
+}
+
+
+@media screen and (max-width: 767px) {
+    .users {
+        position: relative;
+        right: 0px;
+    }
+}

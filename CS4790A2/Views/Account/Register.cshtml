@@ -1,14 +1,19 @@
 @model CS4790A3.Models.User
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Register";
 }
 
-<h2>Create</h2>
+<h2>Register</h2>
 
-<form asp-action="Create">
+<form asp-action="Register">
     <div class="form-horizontal">
-        <h4>User</h4>
+        <h4>New User</h4>
+        @if(ViewBag.Message != null){
+            <div class="form-group">
+                   <div class=" col-md-10">@ViewBag.Message</div>
+            </div>
+        }
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -26,8 +31,23 @@
             </div>
         </div>
         <div class="form-group">
+            <label asp-for="Password" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Register" class="btn btn-default" />
             </div>
         </div>
     </div>
