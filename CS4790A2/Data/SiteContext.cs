@@ -28,5 +28,8 @@ namespace CS4790A3.Data
         }
 
 
+        public DbSet<CS4790A3.Models.Cart> Cart { get; set; }
+
+
     }
 }

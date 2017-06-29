@@ -1,0 +1,110 @@
+@using CS4790A3.Models;
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h2>Cart</h2>
+
+@{ List<Site> sites = (List<Site>)@ViewData["Sites"];
+    foreach (Site r in sites)
+    {
+
+        <div class="col-md-12 col-xs-11 top10">
+
+            <div>
+                <table class="table-responsive table-bordered col-md-9 col-xs-11 table-striped">
+                    <tr>
+                        <td class="col-xs-3">Site Name:</td>
+                        <td>
+                            @Html.ActionLink(r.siteName, "SiteView", "Home", new { id = r.SiteID })
+
+                            &nbsp;
+                            @if (Context.Session.GetInt32("UserLevel") == 100)
+                            {
+
+                                @Html.ActionLink("Edit", "SiteEdit", "Home", new { id = r.SiteID })
+
+                            }
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-3">Land Type:</td>
+                        <td>@r.siteLandType</td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-3">Description:</td>
+                        <td>@r.siteDescription</td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-3">Price:</td>
+                        <td>@r.siteCost</td>
+                    </tr>
+
+                </table>
+            </div>
+            @if (r.imglocation != null)
+                {
+                <img src="~/images/sites/@r.imgthumblocation " class="img-responsive col-xs-0 col-md-2" />
+            }
+        </div>
+        
+
+
+
+    }
+    <table class="top10">
+        <tr>
+            <td>Total Items: <span id="TotalItems">@sites.Sum(e => e.siteCost) </span></td>
+            </tr>
+        <tr>
+            <td>Tax Rate: <span id="TaxAmount"></span> 
+            <td><input type="number" maxlength="6" id="zipcode"/></td>
+            <td><button onclick="CalcTax()">Calculate Tax</button></td>
+        </tr>
+        <tr>
+            <td>Total for Order: <span id="Total"></span></td>
+        </tr>
+        <tr>
+            <td>
+            @if (Context.Session.GetInt32("UserID") != null)
+            {
+                <Button id="btnCheckOut" disabled>Check Out</Button>
+            } else
+            {
+                <h3>Login to Checkout!</h3>
+
+            }
+                </td>
+        </tr>
+    </table>
+}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script>
+    function CalcTax() {
+        var zip = document.getElementById('zipcode').value;
+        console.log(zip);
+        var reqUrl = "https://sandbox-rest.avatax.com/api/v2/taxrates/bypostalcode?country=US&postalCode=".concat(zip);
+        $.ajax({
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Basic aW50ZXJmZXIwQGdtYWlsLmNvbTo5NjdDRTEzMDNB")
+            },
+            url: reqUrl,
+            success: function (response) {
+                document.querySelector('#TaxAmount').innerHTML = Math.round(response.totalRate * document.querySelector('#TotalItems').innerHTML * 100)/100;
+
+                document.querySelector('#Total').innerHTML = parseFloat(document.querySelector('#TaxAmount').innerHTML) + parseFloat(document.querySelector('#TotalItems').innerHTML );
+                document.getElementById("btnCheckOut").disabled = false;
+            },
+            error: function( stat, err){
+                alert("Add Correct Zipcode");
+                document.getElementById("btnCheckOut").disabled = true
+            
+            }
+
+        });
+
+    }
+</script>

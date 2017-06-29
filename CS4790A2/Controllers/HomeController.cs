@@ -14,6 +14,7 @@ using System.IO;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using ImageMagick;
+using Newtonsoft.Json;
 
 namespace CS4790A3
     .Controllers
@@ -142,10 +143,9 @@ namespace CS4790A3
                                 await file.CopyToAsync(fileStream);
                                 using (var image = new MagickImage(Path.Combine(uploads, file.FileName)))
                                 {
-                                    image.Resize(100, 0);
+                                    image.Resize(100, 100);
                                     image.Strip();
-                                    image.Quality = 90;
-
+                                    image.Quality = 75;
                                     image.Write(Path.Combine(uploads, "thumb" + file.FileName));
 
                                 }
@@ -277,7 +277,8 @@ namespace CS4790A3
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
             return View("SiteView",site);
         }
-        
+
+
 
         private bool SiteExists(int siteID)
         {
