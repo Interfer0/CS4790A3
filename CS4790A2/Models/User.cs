@@ -11,6 +11,7 @@ namespace CS4790A3.Models
         public int UserID { get; set; }
 
         [Required]
+        
         [Display(Name = "User Name")]
         public String userName { get; set; }
         
@@ -30,5 +31,6 @@ namespace CS4790A3.Models
         
         [Required]
         public int accountType { get; set; }
+
     }
 }

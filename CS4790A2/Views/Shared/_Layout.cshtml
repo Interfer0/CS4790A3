@@ -1,5 +1,8 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@using CS4790A3.Models;
+@using CS4790A3.Services;
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,13 +51,25 @@
                     }
 
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>              
-                    <li class="navbar-text">(These would not be visible if not logged in)</li>
-                </ul>
-                <ul class="nav navbar-nav users" >
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Shopping" asp-action="Cart">Shopping Cart(
+                        @{
+                            if (Context.Session.GetString("usersCart") == null)
+                            {
+                                
+                                Cart crt = new Cart();                                
+                                Context.Session.SetString("usersCart", JsonConvert.SerializeObject(crt));
+                            }
+
+                            Cart crt2 = JsonConvert.DeserializeObject<Cart>(Context.Session.GetString("usersCart"));
+                            @CartService.itemCount(crt2);
+
+                        }
+                            )
+                        </a></li></ul><ul class="nav navbar-nav users" >
                     @if (Context.Session.GetInt32("UserID") != null)
                     {
-                        <li>@Context.Session.GetString("UserName");</li>                        
+                        <li><a>@Context.Session.GetString("UserName")</a></li>                        
                         <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
                     }
                     else

@@ -9,5 +9,8 @@ namespace CS4790A3.Models.ViewModels
     {
         public int UserID { get; set; }
         public int SiteID { get; set; }
+
+        public User user { get; set; }
+        public Site site { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace CS4790A3
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseWebRoot("wwwroot")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()

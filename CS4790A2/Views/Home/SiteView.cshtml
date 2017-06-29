@@ -1,10 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model CS4790A3.Models.Site
+﻿@model CS4790A3.Models.Site
+@using Microsoft.AspNetCore.Http;
 
-    <h1 class="col-xs-12">Thank you all for your contributions!</h1>
-    <div class="col-xs-12">
+<h1 class="col-xs-12">Site Information</h1>
+<div class="col-xs-12">
     <div class="col-md-5 col-xs-12">
         <table class="table-striped">
             <tr>
@@ -15,28 +13,39 @@
                 <td class="col-xs-4 text-left pad2">Land Type: </td>
                 <td>@Model.siteLandType</td>
             </tr>
+            @if (false)
+            {
+                <tr>
+                    <td class="col-xs-4 text-left pad2">Latitude: </td>
+                    <td>
+                        <script>document.write(convertLatLong(@Model.siteLat, "latitude"))</script>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-4 text-left pad2">Longitude: </td>
+                    <td>
+                        <script>document.write(convertLatLong(@Model.siteLong,"longitude"))</script>
+                    </td>
+                </tr>
+            }
             <tr>
-                <td class="col-xs-4 text-left pad2">Latitude: </td>
-                <td>
-                <script>document.write(convertLatLong(@Model.siteLat, "latitude"))</script></td>
-            </tr>
-            <tr>
-                <td class="col-xs-4 text-left pad2">Longitude: </td>
-                <td>
-                <script>document.write(convertLatLong(@Model.siteLong,"longitude"))</script></td>
-            </tr>
-            <tr>
+
+
+
                 <td class="col-xs-4 text-left pad2">Description: </td>
                 <td>@Model.siteDescription</td>
             </tr>
-            <tr>
-                <td class="col-xs-4 text-left pad2">Water available? </td>
-                <td>@Model.siteWater</td>
-            </tr>
-            <tr>
-                <td class="col-xs-4 text-left pad2">Miles to gas station: </td>
-                <td>@Model.siteGas</td>
-            </tr>
+            @if (false)
+            {
+                <tr>
+                    <td class="col-xs-4 text-left pad2">Water available? </td>
+                    <td>@Model.siteWater</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-4 text-left pad2">Miles to gas station: </td>
+                    <td>@Model.siteGas</td>
+                </tr>
+            }
             <tr>
                 <td class="col-xs-4 text-left pad2">Offroad vehicles only: </td>
                 <td>@Model.siteOffroad</td>
@@ -46,40 +55,47 @@
                 <td>@Model.siteUses</td>
             </tr>
             <tr>
-                <td class="col-xs-4 text-left pad2">User Name: </td>
-                <td>@Model.User.userName</td>
-        </tr>
-        <tr>
-            <td class="col-xs-4 text-left pad2">Email: </td>
-            <td>@Model.User.userEmail</td>
-        </tr>
-        <tr>
-            <td class="col-xs-4 text-left pad2">Is Site Level?: </td>
-            <td>@Model.siteLevel</td>
-        </tr>
-        <tr>
-            <td class="col-xs-4 text-left pad2">
-                <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-primary top10">To Sites...</button>
-                <br /><br />
-            </td>
-        </tr>
+                <td class="col-xs-4 text-left pad2">Is Site Level?: </td>
+                <td>@Model.siteLevel</td>
+            </tr>
+            @if (true)
+            {
+            <tr>
+                <td class="col-xs-4 text-left pad2">Cost:</td>
+                <td>@Model.siteCost</td>
+            </tr>
+            }
+            <tr>
+                <td class="col-xs-4 text-left pad2">
+                    @if (true)
+                    {
+                        <a asp-action="AddItem"
+                           asp-controller="Cart"
+                           asp-route-item="@(Model.SiteID)"
+                           class="btn btn-primary btn">Add TO Cart</a>
+                    }
+                    <button onclick="location.href='@Url.Action("Sites","Home")'" class="btn btn-primary top10">To Sites</button>
+                    <br /><br />
+                </td>
+            </tr>
 
-    </table>
-</div>
-<div class="col-md-5 col-xs-12">
-    <div id="map" style="width:100%;height:50vh;"></div>
-</div>
+
+        </table>
+        <img src="~/images/sites/@Model.imglocation" class=" col-xs-12 col-md-12" />
+
+    </div>
+    <div class="col-md-5 col-xs-12">
+        <div id="map" style="width:100%;height:50vh;"></div>
+    </div>
 
 </div>
 <div class="col-xs-12">
-    <table>
-        
-        
-    </table>
+    <table></table>
 
 </div>
-
-<script>
+@if (false)
+{
+    <script>
     var marker;
 
 
@@ -98,10 +114,12 @@
                 map:map,
             title: 'Site Location'
         });
-        
+
     }
 
 
-</script>
+    </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtfgo1CUqPTn2EV8m39gAm8x6xqVb92KE&callback=myMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtfgo1CUqPTn2EV8m39gAm8x6xqVb92KE&callback=myMap"></script>
+
+}

@@ -43,13 +43,15 @@ namespace CS4790A3.Models
         public double siteCost { get; set; }
         [Display(Name = "Image Location")]
         public string imglocation { get; set; }
+        public string imgthumblocation { get; set; }
         [Display(Name = "Is Site Available")]
         public Boolean siteAvailable { get; set; }
-
-        [Display(Name = "Created By:")]
-        public int UserID { get; set; }
+       
 
         public ICollection<Comment> Comments { get; set; }
-        public User User { get; set; }
+    
+
+        
+        
     }
 }

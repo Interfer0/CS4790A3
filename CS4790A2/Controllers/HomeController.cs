@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using CS4790A3.Services;
+using System.IO;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+using ImageMagick;
 
 namespace CS4790A3
     .Controllers
@@ -17,10 +21,13 @@ namespace CS4790A3
     public class HomeController : Controller
     {
         private readonly SiteContext _context;
+        private IHostingEnvironment _env;
+     
 
-        public HomeController(SiteContext context)
+        public HomeController(SiteContext context, IHostingEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -81,16 +88,12 @@ namespace CS4790A3
                 case "land_type":
                     sites = sites.OrderBy(s => s.siteLandType);
                     break;
-                case "submitted_by":
-                    sites = sites.OrderByDescending(s => s.User.userName);
-                    break;
                 default:
                     sites = sites.OrderBy(s => s.siteName);
                     break;
             }
             int pageSize = 5;
             return View(await PaginatedList<Site>.CreateAsync(sites
-                .Include(c => c.User)
                 .AsNoTracking(),
                 page ?? 1, pageSize));
 
@@ -100,14 +103,15 @@ namespace CS4790A3
         [HttpGet]
         public ViewResult SiteForm()
         {
-
+            if (!UserService.checkSecurityLevel(HttpContext.Session.GetInt32("UserLevel"), 100))
+                return View("../Account/Login");
 
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
 
                 return View();
             
         }
-
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -117,10 +121,46 @@ namespace CS4790A3
             
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
+                foreach (var Image in files)
+                {
+                    if (Image != null && Image.Length > 0)
+                    {
+                        
+                        var file = Image;
+                        
+                        var uploads = Path.Combine(_env.WebRootPath, "images\\sites");
+
+                        if (file.Length > 0)
+                        {
+                            var fileName = ContentDispositionHeaderValue.Parse
+                                (file.ContentDisposition).FileName.Trim('"');
+
+                            System.Console.WriteLine(fileName);
+                            using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                                using (var image = new MagickImage(Path.Combine(uploads, file.FileName)))
+                                {
+                                    image.Resize(100, 0);
+                                    image.Strip();
+                                    image.Quality = 90;
+
+                                    image.Write(Path.Combine(uploads, "thumb" + file.FileName));
+
+                                }
+                                site.imglocation = file.FileName;
+                                site.imgthumblocation = "thumb" + file.FileName;
+                            }
+
+
+                        }
+                    }
+                }
+
                 _context.Add(site);
                 await _context.SaveChangesAsync();
                 var site2 = await _context.Sites
-                    .Include(r => r.User)
                     .SingleOrDefaultAsync(m => m.SiteID == site.SiteID);
                 return View("SiteView",site2);
             }
@@ -133,7 +173,6 @@ namespace CS4790A3
             Debug.WriteLine("siteID " + id);
 
             var site = await _context.Sites
-                .Include(r => r.User)
                 .SingleOrDefaultAsync(m => m.SiteID == id);
  
 
@@ -148,7 +187,6 @@ namespace CS4790A3
             
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
             var site = await _context.Sites
-                .Include(r => r.User)
                 .SingleOrDefaultAsync(m => m.SiteID == id);
 
             return View("SiteEdit", site);
@@ -157,7 +195,6 @@ namespace CS4790A3
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SiteEdit(int id, [Bind("SiteID," +
-            "UserID," +
             "siteName," +
             "siteDescription," +
             "siteLandType," +
@@ -183,6 +220,45 @@ namespace CS4790A3
             {
                 try
                 {
+                    var test = Request.Form;
+                    var files = HttpContext.Request.Form.Files;
+                    foreach (var Image in files)
+                    {
+                        
+                        if (Image != null && Image.Length > 0)
+                        {
+
+                            var file = Image;
+                            var uploads = Path.Combine(_env.WebRootPath, "images\\sites");
+
+                            if (file.Length > 0)
+                            {
+                                var fileName = ContentDispositionHeaderValue.Parse
+                                    (file.ContentDisposition).FileName.Trim('"');
+
+                                System.Console.WriteLine(fileName);
+                                using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                                {
+                                    await file.CopyToAsync(fileStream);
+                                    using (var image = new MagickImage(Path.Combine(uploads, file.FileName)))
+                                    {                                                                               
+                                        image.Resize(100, 0);                                        
+                                        image.Strip();
+                                        image.Quality = 90;
+                                        
+                                        image.Write(Path.Combine(uploads, "thumb" + file.FileName));
+
+                                    }
+                                    site.imglocation = file.FileName;
+                                    site.imgthumblocation = "thumb" + file.FileName;
+                                }
+
+
+                            }
+                        }
+                    }
+
+
                     _context.Update(site);
                     await _context.SaveChangesAsync();
                 }
@@ -201,6 +277,7 @@ namespace CS4790A3
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "userName");
             return View("SiteView",site);
         }
+        
 
         private bool SiteExists(int siteID)
         {

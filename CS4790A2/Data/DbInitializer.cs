@@ -46,7 +46,6 @@ namespace CS4790A3.Data
             {
                 new Site {
                             siteName = "Home",
-                            UserID = users.Single( i => i.userName == "Interfer0").UserID,
                             siteDescription = "Not really my house",
                             siteGas = 3,
                             siteLandType = "Private",
@@ -56,12 +55,12 @@ namespace CS4790A3.Data
                             siteOffroad = false,
                             siteUses = "Living",
                             siteWater = true,
-                            siteCost = 9.99
+                            siteCost = 9.99,
+                            siteAvailable = true
 
                            },
                 new Site {
                             siteName = "Camp1",
-                            UserID = users.Single( i => i.userName == "Interfer0").UserID,
                             siteDescription = "Not a real camp",
                             siteGas = 3,
                             siteLandType = "Private",
@@ -71,11 +70,11 @@ namespace CS4790A3.Data
                             siteOffroad = false,
                             siteUses = "Nothing",
                             siteWater = true,
-                            siteCost = 3.99
+                            siteCost = 3.99,
+                            siteAvailable = true
                            },
                 new Site {
                             siteName = "Camp2",
-                            UserID = users.Single( i => i.userName == "Interfer0").UserID,
                             siteDescription = "A field",
                             siteGas = 3,
                             siteLandType = "Private",
@@ -85,7 +84,8 @@ namespace CS4790A3.Data
                             siteOffroad = false,
                             siteUses = "Swimming",
                             siteWater = true,
-                            siteCost = 5.99
+                            siteCost = 5.99,
+                            siteAvailable = true
                            }
 
             };

@@ -44,9 +44,9 @@ namespace CS4790A3.Migrations
                     b.Property<int>("SiteID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("UserID");
-
                     b.Property<string>("imglocation");
+
+                    b.Property<string>("imgthumblocation");
 
                     b.Property<bool>("siteAvailable");
 
@@ -77,9 +77,25 @@ namespace CS4790A3.Migrations
 
                     b.HasKey("SiteID");
 
+                    b.ToTable("Site");
+                });
+
+            modelBuilder.Entity("CS4790A3.Models.SitesPurchased", b =>
+                {
+                    b.Property<int>("SitesPurchasedID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("SiteID");
+
+                    b.Property<int>("UserID");
+
+                    b.HasKey("SitesPurchasedID");
+
+                    b.HasIndex("SiteID");
+
                     b.HasIndex("UserID");
 
-                    b.ToTable("Site");
+                    b.ToTable("SitesPurchased");
                 });
 
             modelBuilder.Entity("CS4790A3.Models.User", b =>
@@ -117,9 +133,14 @@ namespace CS4790A3.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CS4790A3.Models.Site", b =>
+            modelBuilder.Entity("CS4790A3.Models.SitesPurchased", b =>
                 {
-                    b.HasOne("CS4790A3.Models.User", "User")
+                    b.HasOne("CS4790A3.Models.Site", "site")
+                        .WithMany()
+                        .HasForeignKey("SiteID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CS4790A3.Models.User", "user")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
